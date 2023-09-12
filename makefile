@@ -1,11 +1,11 @@
-NAME = Solar\ System\ Simulator
+NAME=Solar\ System\ Simulator
 BUILD_DIR = .
 C_FILES = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
 CPP_VERSION = -std=c++17
 
 DEFINES:=
-INCLUDES:= -Isrc -I/Users/petrhora/Desktop/Desktop/opengl-projects/OpenGL/include -framework Cocoa -framework OpenGL -framework IOKit
-LINKERS:= -L/Users/petrhora/Desktop/Desktop/opengl-projects/OpenGL/lib -lglfw3 -lglew
+INCLUDES:= -Isrc -I../OpenGL/include -framework Cocoa -framework OpenGL -framework IOKit
+LINKERS:= -L../OpenGL/lib -lglfw3 -lglew
 
 
 all:
