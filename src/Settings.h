@@ -14,7 +14,8 @@ class Settings {
 		~Settings();
 
 		static bool debug;
-		static int entitySelected;
+		static unsigned int entitySelected;
+		static unsigned int mainEntity;
 		
 		static Color backgroundColor;
 };

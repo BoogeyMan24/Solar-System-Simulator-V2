@@ -27,9 +27,9 @@ MTksMzAxNiwwLDAsMCwxOTIwLDE5MjAsMCwxLDgyOSwyLDEsMSwwLDQ1MTgyLjMzLDk5OTk5OSw4OTEx
 */
 
 //SETTINGS
-int Settings::entitySelected = -1;
+unsigned int Settings::entitySelected = -1;
 bool Settings::debug = false;
-
+unsigned int Settings::mainEntity = 0;
 
 //CAMERA SETTINGS
 float Camera::speed = 250.0f;

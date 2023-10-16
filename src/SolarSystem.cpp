@@ -16,6 +16,13 @@ void SolarSystem::OnUpdate(float deltaTime)
 	Camera::OnUpdate(deltaTime);
 	m_EntityManager.OnUpdate(deltaTime * tick);
 	m_EntityManager.OnUpdateEntities(deltaTime * tick);
+
+	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && tick > 0) {
+		tickSaved = tick;
+		tick = 0;
+	} else if (Input::IsKeyPressed(GLFW_KEY_SPACE)) {
+		tick = tickSaved;
+	}
 }
 
 void SolarSystem::OnRender()
@@ -30,7 +37,10 @@ void SolarSystem::OnImGuiRender()
 {
 	if (ImGui::BeginTabBar("Main")) {
 		if (ImGui::BeginTabItem("Main")) {
-			ImGui::SliderFloat("Tick", &tick, 0.0f, 1000.0f, "%.3f");
+			ImGui::InputFloat("Tick", &tick, 0.1f, 0.1f, "%.3f", ImGuiInputTextFlags_EnterReturnsTrue);
+			if (ImGui::Button("Clear Entities")) {
+				m_EntityManager.ClearEntities();
+			}
 
 			if (Settings::debug) {
 				ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -65,17 +75,21 @@ void SolarSystem::OnImGuiRender()
 void SolarSystem::OnImGuiRenderInspect()
 {
 	if (Settings::entitySelected != -1) {
-		std::vector<Entity>& entities = *m_EntityManager.GetEntities();
+		std::unordered_map<unsigned int, Entity>& entities = *m_EntityManager.GetMappedEntities();
 		int index = Settings::entitySelected;
 
-		ImGui::Text("%s", entities[index].name.c_str());
-		ImGui::InputFloat2("Position", &entities[index].transform.position.x, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
-		ImGui::InputFloat2("Velocity", &entities[index].transform.velocity.x, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
-		ImGui::ColorEdit4("Color", &entities[index].color.r, ImGuiInputTextFlags_EnterReturnsTrue);
-		ImGui::InputFloat("Mass", &entities[index].mass, 0.1f, 0.1f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
-		ImGui::InputFloat("Radius", &entities[index].radius, 0.1f, 0.1f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
-		ImGui::Checkbox("Affected By Gravity", &entities[index].affectedByGravity);
-		ImGui::Checkbox("Affects Others", &entities[index].affectsOthers);
+		ImGui::Text("%s", (entities.at(index).name + " #" + std::to_string(entities.at(index).id)).c_str());
+		ImGui::InputFloat2("Position", &entities.at(index).transform.position.x, "%.10f", ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::InputFloat2("Velocity", &entities.at(index).transform.velocity.x, "%.10f", ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::ColorEdit4("Color", &entities.at(index).color.r, ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::InputFloat("Mass", &entities.at(index).mass, 0.1f, 0.1f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::InputFloat("Radius", &entities.at(index).radius, 0.1f, 0.1f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::Checkbox("Affected By Gravity", &entities.at(index).affectedByGravity);
+		ImGui::Checkbox("Affects Others", &entities.at(index).affectsOthers);
+		if (ImGui::Button("Delete Entity")) {
+			m_EntityManager.RemoveEntity(entities.at(index).id);
+			Settings::entitySelected = -1;
+		}
 	} else {
 		ImGui::Text("No object selected.");
 		ImGui::Text("Select an object by left clicking on it.");

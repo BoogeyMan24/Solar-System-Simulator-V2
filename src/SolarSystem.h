@@ -29,7 +29,8 @@ class SolarSystem {
 
 		EntityManager GetEntityManager() const;
 	private:
-		float tick = 1.0f;
+		float tick = 0.0f;
+		float tickSaved = 1.0f;
 
 		float zoom = 1.0f;
 		float zoomSpeed = 1.0f;
@@ -39,5 +40,5 @@ class SolarSystem {
 		Renderer m_Renderer;
 		Camera camera;
 
-		u_int64_t vertexCapacity = 1024;
+		u_int64_t vertexCapacity = 10000 * 4;
 };

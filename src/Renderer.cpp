@@ -61,6 +61,7 @@ Renderer::~Renderer() {
 void Renderer::init(unsigned int vertexCapacity)
 {
 	this->vertexCapacity = vertexCapacity;
+	this->indicesCapacity = vertexCapacity * (3/2);
 	
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -85,33 +86,23 @@ void Renderer::init(unsigned int vertexCapacity)
 	GLCall(glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), toVOIDptr(offsetof(Vertex, radius))));
 	
 	
-	uint32_t indices[] = {
-		0, 1,  2,  2,  3, 0,
-		4, 5,  6,  6,  7, 4,
-		8, 9, 10, 10, 11, 8
-	};
+	uint32_t indices[indicesCapacity];
+	unsigned int offset = 0;
+	for(int i = 0; i < indicesCapacity; i += 6) {
+		indices[i + 0] = 0 + offset;
+		indices[i + 1] = 1 + offset;
+		indices[i + 2] = 2 + offset;
 
-	uint32_t indicesGPT[] = {
-		 0,  1,  2,  2,  3,  0, 
-		 4,  5,  6,  6,  7,  4, 
-		 8,  9, 10, 10, 11, 8,
-        12, 13, 14, 14, 15, 12, 
-		16, 17, 18, 18, 19, 16, 
-		20, 21, 22, 22, 23, 20,
-    	24, 25, 26, 26, 27, 24, 
-		28, 29, 30, 30, 31, 28, 
-		32, 33, 34, 34, 35, 32,
-        36, 37, 38, 38, 39, 36, 
-		40, 41, 42, 42, 43, 40, 
-		44, 45, 46, 46, 47, 44,
-        48, 49, 50, 50, 51, 48, 
-		52, 53, 54, 54, 55, 52, 
-		56, 57, 58, 58, 59, 56
-	};
+		indices[i + 3] = 2 + offset;
+		indices[i + 4] = 3 + offset;
+		indices[i + 5] = 0 + offset;
+
+		offset += 4;
+	}
 
 	GLCall(glGenBuffers(1, &m_IBO));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesGPT), indicesGPT, GL_STATIC_DRAW));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW));
 
 	m_Shader = std::make_unique<Shader>(m_Path);
 	m_Shader->Bind();
@@ -137,9 +128,9 @@ void Renderer::SetUniform(glm::mat4 mvp, glm::vec2 resolution, float zoom) {
 	m_Shader->SetUniform1f("u_Zoom", zoom);
 }
 
-void Renderer::DrawAll(std::vector<Entity>* entitiesPtr)
+void Renderer::DrawAll(std::vector<Entity> entitiesPtr)
 {
-	std::vector<Entity>& entities = *entitiesPtr;
+	std::vector<Entity> entities = entitiesPtr;
 
 	Vertex vertices[entities.size() * 4];
 

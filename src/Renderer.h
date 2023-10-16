@@ -22,11 +22,12 @@ class Renderer {
 
 		void SetUniform(glm::mat4 mvp, glm::vec2 resoluion, float zoom);
 
-		void DrawAll(std::vector<Entity>* entities);
+		void DrawAll(std::vector<Entity> entities);
 
 	private:
 		GLuint m_VAO, m_VBO, m_IBO;
 		unsigned int vertexCapacity;
+		unsigned int indicesCapacity;
 
 		std::unique_ptr<Shader> m_Shader;
 		std::string m_Path = "res/shaders/circle.shader";

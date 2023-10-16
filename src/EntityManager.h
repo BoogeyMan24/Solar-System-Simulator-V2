@@ -18,13 +18,17 @@ class EntityManager {
 		void AddMass(Entity entity);
 		void NewEntity(Entity entity);
 		void NewEntity(std::string& name, glm::vec2 position, glm::vec2 velocity, float mass, float radius, Color color);
+		void RemoveEntity(unsigned int id);
+		void ClearEntities();
 		void ClearMass();
 
-		std::vector<Entity>* GetEntities();
+		std::vector<Entity> GetEntities();
+		std::unordered_map<unsigned int, Entity>* GetMappedEntities();
+
 	private:
 		unsigned int ids = 0;
 
-		const float G_CONSTANT = 0.0001f;
+		const float G_CONSTANT = 1.0f;
 
-		std::vector<Entity> m_Entities;
+		std::unordered_map<unsigned int, Entity> m_Entities;
 };
