@@ -15,12 +15,6 @@
 #include "Input.h"
 #include "Settings.h"
 
-struct Vertex 
-{
-	float Position[3];
-	float Color[4];
-};
-
 class SolarSystem {
 	public:
 		SolarSystem();
@@ -30,6 +24,7 @@ class SolarSystem {
 		void OnRender();
 		void OnImGuiRender();
 		void OnImGuiRenderInspect();
+		void OnImGuiRenderCamera();
 		void OnImGuiRenderDebug(bool debug);
 
 		EntityManager GetEntityManager() const;

@@ -20,7 +20,7 @@ void SolarSystem::OnUpdate(float deltaTime)
 
 void SolarSystem::OnRender()
 {
-	m_Renderer.ClearColor(COLOR_BLACK);
+	m_Renderer.ClearColor(Settings::backgroundColor);
 	m_Renderer.Clear();
 	m_Renderer.SetUniform(Window::GetProjection() * Camera::GetView(), Window::GetResolution(), Camera::GetZoom());
 	m_Renderer.DrawAll(m_EntityManager.GetEntities());
@@ -28,7 +28,38 @@ void SolarSystem::OnRender()
 
 void SolarSystem::OnImGuiRender()
 {
-	ImGui::SliderFloat("Tick", &tick, 0.0f, 1000.0f, "%.3f");
+	if (ImGui::BeginTabBar("Main")) {
+		if (ImGui::BeginTabItem("Main")) {
+			ImGui::SliderFloat("Tick", &tick, 0.0f, 1000.0f, "%.3f");
+
+			if (Settings::debug) {
+				ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			}
+			
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Inspect")) {
+			OnImGuiRenderInspect();
+
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Camera")) {
+			OnImGuiRenderCamera();
+
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Debug")) {
+			OnImGuiRenderDebug(Settings::debug);
+			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+			ImGui::EndTabItem();
+		}
+		
+		ImGui::EndTabBar();
+	}
 }
 
 void SolarSystem::OnImGuiRenderInspect()
@@ -37,11 +68,10 @@ void SolarSystem::OnImGuiRenderInspect()
 		std::vector<Entity>& entities = *m_EntityManager.GetEntities();
 		int index = Settings::entitySelected;
 
-
 		ImGui::Text("%s", entities[index].name.c_str());
 		ImGui::InputFloat2("Position", &entities[index].transform.position.x, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 		ImGui::InputFloat2("Velocity", &entities[index].transform.velocity.x, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
-		ImGui::ColorEdit4("Velocity", &entities[index].color.r, ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::ColorEdit4("Color", &entities[index].color.r, ImGuiInputTextFlags_EnterReturnsTrue);
 		ImGui::InputFloat("Mass", &entities[index].mass, 0.1f, 0.1f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 		ImGui::InputFloat("Radius", &entities[index].radius, 0.1f, 0.1f, "%.2f", ImGuiInputTextFlags_EnterReturnsTrue);
 		ImGui::Checkbox("Affected By Gravity", &entities[index].affectedByGravity);
@@ -52,20 +82,28 @@ void SolarSystem::OnImGuiRenderInspect()
 	}
 }
 
-void SolarSystem::OnImGuiRenderDebug(bool debug)
+void SolarSystem::OnImGuiRenderCamera()
 {
+	ImGui::InputFloat2("Position", &Camera::position.x, "%.0f", ImGuiInputTextFlags_EnterReturnsTrue);
+
 	if (ImGui::SliderFloat("Zoom", &zoom, 0.5f, 3.5f, "%.3f")) {
 		Camera::SetZoom(zoom);
 	}
-	if (ImGui::SliderFloat("Zoom Speed", &zoomSpeed, 0.05f, 1.0f, "%.3f")) {
-		Camera::SetZoomSpeed(zoomSpeed);
-	}
-	if (ImGui::SliderFloat("Camera Speed", &speed, 25.0f, 1000.0f, "%.1f")) {
-		Camera::SetSpeed(speed);
-	}
+	
+	ImGui::SliderFloat("Zoom Speed", &Camera::zoomSpeed, 0.05f, 1.0f, "%.3f");
+	ImGui::SliderFloat("Camera Speed", &Camera::speed, 25.0f, 1000.0f, "%.1f");
+
+	ImGui::ColorEdit4("Background Color", &Settings::backgroundColor.r);
+
+}
+
+void SolarSystem::OnImGuiRenderDebug(bool debug)
+{
 	if (ImGui::Button("Reload Shader")) {
 		m_Renderer.ReloadShader();
 	}
+
+	ImGui::Checkbox("Debug", &Settings::debug);
 }
 
 

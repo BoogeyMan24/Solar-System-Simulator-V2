@@ -40,9 +40,9 @@ void Camera::OnUpdate(float deltaTime)
 
 	if (pressed) {
 		glm::vec2 normalized = glm::normalize(movement);
-		view = glm::translate(view, speed * glm::vec3(normalized, 0.0f) * deltaTime);
 		position += speed * normalized * deltaTime;
 	}
+	view = glm::translate(glm::mat4(1.0f), glm::vec3(position, 0.0f));
 
 	movement = glm::vec2(0.0f);
 	pressed = false;

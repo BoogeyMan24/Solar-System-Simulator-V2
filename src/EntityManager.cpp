@@ -22,6 +22,9 @@ void EntityManager::OnUpdate(float deltaTime)
 				
 			}
 		}
+	} else if (Input::IsButtonPressed(GLFW_MOUSE_BUTTON_RIGHT)) {
+		glm::vec2 position = Camera::GetWorldPosition(Input::GetMousePosition());
+		NewEntity(Entity("Planet 1", position, glm::vec2(0.0f), 5, 5, COLOR_RED));
 	}
 }
 

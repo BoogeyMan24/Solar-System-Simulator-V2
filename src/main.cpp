@@ -25,7 +25,24 @@ MTksMzAxNiwwLDAsMCwxOTIwLDE5MjAsMCwxLDgyOSwyLDEsMSwwLDQ1MTgyLjMzLDk5OTk5OSw4OTEx
 
 
 */
+
+//SETTINGS
 int Settings::entitySelected = -1;
+bool Settings::debug = false;
+
+
+//CAMERA SETTINGS
+float Camera::speed = 250.0f;
+glm::vec2 Camera::movement;
+glm::vec2 Camera::position = glm::vec2(0.0f);
+bool Camera::pressed = false;
+
+float Camera::zoomSpeed = 1.0f;
+float Camera::m_Zoom = 1.0f;
+
+glm::mat4 Camera::view = glm::mat4(1.0f);
+
+Color Settings::backgroundColor = COLOR_BLACK;
 
 void ImGuiInit(GLFWwindow* window) {
 	IMGUI_CHECKVERSION();
@@ -105,9 +122,6 @@ int main(void)
 
 
 	{
-
-		bool debug = false;
-
 		SolarSystem solarSystem;
 
 		ImGuiInit(window);
@@ -125,29 +139,7 @@ int main(void)
 
 			ImGuiNew();
 			
-
-			if (ImGui::BeginTabBar("Main")) {
-				if (ImGui::BeginTabItem("Main")) {
-					solarSystem.OnImGuiRender();
-					
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Inspect")) {
-					solarSystem.OnImGuiRenderInspect();
-
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Debug")) {
-					solarSystem.OnImGuiRenderDebug(debug);
-					ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-					ImGui::EndTabItem();
-				}
-				
-				ImGui::EndTabBar();
-			}
+			solarSystem.OnImGuiRender();
 
 
 			solarSystem.OnUpdate(deltaTime);

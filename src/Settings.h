@@ -13,6 +13,8 @@ class Settings {
 		Settings();
 		~Settings();
 
+		static bool debug;
 		static int entitySelected;
-		static bool destroyOnCollision;
+		
+		static Color backgroundColor;
 };
