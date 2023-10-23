@@ -1,8 +1,9 @@
 # gravity-simulator-V2
 Original version [here](https://github.com/BoogeyMan24/gravity-simulator-V1)
-## DON'T FORGET TO SET TICK SPEED!
-### It defaults to 0 and so no movement. Its in the main tab of ImGui.
+### DON'T FORGET TO SET TICK SPEED!
+It defaults to 0 and so no movement. Its in the main tab of ImGui.
 
+# About this project
 A gravity/solar system simulation application written in c++ using OpenGL. I coded for this project: an input system (mouse and keyboard),camera system, entities, settings, physics calculations, time steps, the renderer (creation of indices, settings up shaders, and drawing to screen). The rendering part was fairly difficult for me since this was my first experience with graphics programming at this low of a level, but I did manage after hours of being clueless (OpenGL doesn't give the most comphensive errors). I have also implemented batch rendering for better performance (all quads are grouped into 1 draw call every frame).
 
 ## Features:
