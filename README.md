@@ -13,7 +13,7 @@ A gravity/solar system simulation application written in c++ using OpenGL. I cod
  - Tick speed (speed up/slow down time)
  - Planet creation (right click -> left click -> change properties)
 
-### The build comes with a (somewhat) stable 3 body orbit (source [here](https://en.wikipedia.org/wiki/Three-body_problem)) values (these values are from reference 11):
+### The build comes with a (somewhat) stable 3 body orbit (source [here](https://en.wikipedia.org/wiki/Three-body_problem)) values (values can be found [here](https://en.wikipedia.org/wiki/Three-body_problem#cite_note-11)):
  - Object 1: velocity (-0.97000436f, 0.24308753f), position (0.4662036850f, 0.4323657300f)
  - Object 2: velocity (0.0f, 0.0f), position (-0.93240737f, -0.86473146f)
  - Object 3: velocity (0.97000436f, -0.24308753f), position (0.4662036850f, 0.4323657300f)
