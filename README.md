@@ -19,7 +19,8 @@ A gravity/solar system simulation application written in c++ using OpenGL. I cod
  - Object 3: velocity (0.97000436f, -0.24308753f), position (0.4662036850f, 0.4323657300f)
  - Gravtiational constant: 1.0f
 
-https://github.com/BoogeyMan24/Solar-System-Simulator-V2/assets/76151726/0d908a5f-fbec-4963-94d0-8ff367fab4a7
+![3-Body-Orbit-shortened](https://github.com/BoogeyMan24/Solar-System-Simulator-V2/assets/76151726/1d923d22-c61f-4a0e-a74d-c6c918498c15)
+
 
 ### I have set a few modifiers on the 3 body orbit to make it move faster and be more visible
 
