@@ -21,7 +21,7 @@ A gravity/solar system simulation application written in c++ using OpenGL. I cod
 
 ![3-Body-Orbit-shortened](https://github.com/BoogeyMan24/Solar-System-Simulator-V2/assets/76151726/1d923d22-c61f-4a0e-a74d-c6c918498c15)
 
-*Sorry about bad quality, it wouldn't let me upload larger files*
+*Sorry about bad quality, in reality it is very smooth (>2000 fps) and high definition. It wouldn't let me upload larger file sizes and the compression is ruthless*
 
 ### I have set a few modifiers on the 3 body orbit to make it move faster and be more visible
 
